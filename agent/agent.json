@@ -1,0 +1,17 @@
+{
+	"Protocol"              : "unix|/var/tmp/apm.sock",
+	"ReportServer"          : "http://sdkbackend-test.jpaas-off00.baidu.com",
+	"LogFile"               : "agent.log",
+
+	"StatsDataPath"         : "/tmp/.apm_file_record_stats",
+	"StatsDataService"      : "/server/php/performance",
+
+	"EventsDataPath"        : "/tmp/.apm_file_record_events",
+	"EventsDataService"     : "/server/php/exception",
+
+	"WebTraceDataPath"      : "/tmp/.apm_file_record_trace",
+	"WebTracesDataService"  : "/server/php/slow_web_trace",
+
+	"ParseDataInterval"     : 10,
+	"ParseDataExpire"       : 60
+}

@@ -1,0 +1,24 @@
+apm.lo: /mh/mysvn/php/hook/apm.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/mh/mysvn/php/hook $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /mh/mysvn/php/hook/apm.c -o apm.lo 
+backtrace.lo: /mh/mysvn/php/hook/backtrace.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/mh/mysvn/php/hook $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /mh/mysvn/php/hook/backtrace.c -o backtrace.lo 
+log.lo: /mh/mysvn/php/hook/log.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/mh/mysvn/php/hook $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /mh/mysvn/php/hook/log.c -o log.lo 
+common/trace_comm.lo: /mh/mysvn/php/hook/common/trace_comm.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/mh/mysvn/php/hook $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /mh/mysvn/php/hook/common/trace_comm.c -o common/trace_comm.lo 
+common/trace_ctrl.lo: /mh/mysvn/php/hook/common/trace_ctrl.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/mh/mysvn/php/hook $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /mh/mysvn/php/hook/common/trace_ctrl.c -o common/trace_ctrl.lo 
+common/trace_mmap.lo: /mh/mysvn/php/hook/common/trace_mmap.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/mh/mysvn/php/hook $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /mh/mysvn/php/hook/common/trace_mmap.c -o common/trace_mmap.lo 
+common/trace_type.lo: /mh/mysvn/php/hook/common/trace_type.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/mh/mysvn/php/hook $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /mh/mysvn/php/hook/common/trace_type.c -o common/trace_type.lo 
+common/sds/sds.lo: /mh/mysvn/php/hook/common/sds/sds.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/mh/mysvn/php/hook $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /mh/mysvn/php/hook/common/sds/sds.c -o common/sds/sds.lo 
+driver_socket.lo: /mh/mysvn/php/hook/driver_socket.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/mh/mysvn/php/hook $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /mh/mysvn/php/hook/driver_socket.c -o driver_socket.lo 
+$(phplibdir)/apm.la: ./apm.la
+	$(LIBTOOL) --mode=install cp ./apm.la $(phplibdir)
+
+./apm.la: $(shared_objects_apm) $(APM_SHARED_DEPENDENCIES)
+	$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_apm) $(APM_SHARED_LIBADD)
+
