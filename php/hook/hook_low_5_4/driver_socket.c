@@ -325,7 +325,12 @@ int apm_driver_socket_rshutdown(TSRMLS_D)
 	//}
 	//mh add end
 
+// support 5.2
+#if PHP_API_VERSION > 20041225
 	php_json_encode(&buf, ZDATA, 0 TSRMLS_CC);
+#else 
+	php_json_encode(&buf, ZDATA);
+#endif
 
 	smart_str_0(&buf);
 
