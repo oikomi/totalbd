@@ -515,7 +515,8 @@ PHP_RSHUTDOWN_FUNCTION(apm)
 					}
 				}
 				// add file recore
-				do_file_record_stats();
+				// delete file record
+				//do_file_record_stats();
 
 				//end file record
 
@@ -627,7 +628,7 @@ static void process_event(int event_type, int type, char * error_filename, uint 
 	//mh print backtrace
 	//APM_RECORD_EVENTS(error_filename);
 	//APM_RECORD_EVENTS(msg);
-	char *record_buf = emalloc(1000);
+	//char *record_buf = emalloc(1000);
 	time_t timep;
 	time(&timep);
 
@@ -636,18 +637,18 @@ static void process_event(int event_type, int type, char * error_filename, uint 
 #else
 	//APM_RECORD_EVENTS(trace_str.c);
 #endif
+	// delete record file
+	// sprintf(
+	// 		record_buf,
+	// 		"%d + %s + %s + %s\n",
+	// 		timep,error_filename, msg,
+	// 	#if PHP_VERSION_ID >= 70000
+	// 		trace_str.s->val
+	// 	#else
+	// 		trace_str.c
+	// 	#endif
 
-	sprintf(
-			record_buf,
-			"%d + %s + %s + %s\n",
-			timep,error_filename, msg,
-		#if PHP_VERSION_ID >= 70000
-			trace_str.s->val
-		#else
-			trace_str.c
-		#endif
-
-			);
+	// 		);
 
 	// APM_RD(host_found) ? host_esc : "",
 	// APM_RD(cookies_found) ? cookies_esc : "",
@@ -656,9 +657,9 @@ static void process_event(int event_type, int type, char * error_filename, uint 
 	// APM_RD(method_found) ? method_esc : "",
 	// APM_RD(status_found) ? status_esc : "");
 
-	APM_RECORD_EVENTS(record_buf);
-	//efree(record_time_buf);
-	efree(record_buf);
+	// APM_RECORD_EVENTS(record_buf);
+	// //efree(record_time_buf);
+	// efree(record_buf);
 
 	// record for file
 
@@ -734,25 +735,25 @@ void extract_data()
 
 		//do record file  stats
 
-		char *record_buf = emalloc(1000);
+		//char *record_buf = emalloc(1000);
 
 		time_t timep;
 		time(&timep);
 
-		sprintf(
-			record_buf,
-			"%d, %s, %s, %s, %s, %s, %f, %f, %f, %ld\n",
-			timep,
-			APM_RD_STRVAL(uri),
-			APM_RD_STRVAL(host),
-			APM_RD_STRVAL(ip),
-			APM_RD_STRVAL(method),
-			APM_RD_STRVAL(status),
-			APM_G(duration)/1000.0,
+		// sprintf(
+		// 	record_buf,
+		// 	"%d, %s, %s, %s, %s, %s, %f, %f, %f, %ld\n",
+		// 	timep,
+		// 	APM_RD_STRVAL(uri),
+		// 	APM_RD_STRVAL(host),
+		// 	APM_RD_STRVAL(ip),
+		// 	APM_RD_STRVAL(method),
+		// 	APM_RD_STRVAL(status),
+		// 	APM_G(duration)/1000.0,
 
-			USEC_TO_SEC(APM_G(user_cpu)),
-			USEC_TO_SEC(APM_G(sys_cpu)),
-			APM_G(mem_peak_usage));
+		// 	USEC_TO_SEC(APM_G(user_cpu)),
+		// 	USEC_TO_SEC(APM_G(sys_cpu)),
+		// 	APM_G(mem_peak_usage));
 
 			// APM_RD(host_found) ? host_esc : "",
 			// APM_RD(cookies_found) ? cookies_esc : "",
@@ -761,9 +762,9 @@ void extract_data()
 			// APM_RD(method_found) ? method_esc : "",
 			// APM_RD(status_found) ? status_esc : "");
 
-		APM_RECORD_STATS(record_buf);
+		//APM_RECORD_STATS(record_buf);
 		//efree(record_time_buf);
-		efree(record_buf);
+		//efree(record_buf);
 
 		//end do record file
 
@@ -1060,7 +1061,7 @@ static void pt_frame_display(pt_frame_t *frame TSRMLS_DC, zend_bool indent, cons
 
     /* indent */
     if (indent) {
-        zend_printf("%*s", (frame->level - 1) * 4, "");
+        //zend_printf("%*s", (frame->level - 1) * 4, "");
         sprintf(record_buf, "%*s", (frame->level - 1) * 4, "");
         APM_RECORD_TRACE(record_buf);
         //strcat(APM_G(whole_trace_str), record_buf);
@@ -1070,7 +1071,8 @@ static void pt_frame_display(pt_frame_t *frame TSRMLS_DC, zend_bool indent, cons
     if (format) {
         va_start(ap, format);
         len = vspprintf(&buf, 0, format, ap); /* implementation of zend_vspprintf() */
-        zend_write(buf, len);
+        //mh delete display in user screen
+        //zend_write(buf, len);
         efree(buf);
         va_end(ap);
     }
@@ -1078,29 +1080,29 @@ static void pt_frame_display(pt_frame_t *frame TSRMLS_DC, zend_bool indent, cons
     /* frame */
     if ((frame->functype & PT_FUNC_TYPES) == PT_FUNC_NORMAL ||
             frame->functype & PT_FUNC_TYPES & PT_FUNC_INCLUDES) {
-        zend_printf("%s(", frame->function);
+        //zend_printf("%s(", frame->function);
         // add for trace
         sprintf(record_buf, "%s(", frame->function);
         APM_RECORD_TRACE(record_buf);
         strcat(APM_G(whole_trace_str), record_buf);
     } else if ((frame->functype & PT_FUNC_TYPES) == PT_FUNC_MEMBER) {
-        zend_printf("%s->%s(", frame->class, frame->function);
+        //zend_printf("%s->%s(", frame->class, frame->function);
         sprintf(record_buf, "%s->%s(", frame->class, frame->function);
         APM_RECORD_TRACE(record_buf);
         strcat(APM_G(whole_trace_str), record_buf);
     } else if ((frame->functype & PT_FUNC_TYPES) == PT_FUNC_STATIC) {
-        zend_printf("%s::%s(", frame->class, frame->function);
+        //zend_printf("%s::%s(", frame->class, frame->function);
         sprintf(record_buf, "%s::%s(", frame->class, frame->function);
         APM_RECORD_TRACE(record_buf);
         strcat(APM_G(whole_trace_str), record_buf);
     } else if ((frame->functype & PT_FUNC_TYPES) == PT_FUNC_EVAL) {
-        zend_printf("%s", frame->function);
+        //zend_printf("%s", frame->function);
         sprintf(record_buf, "%s", frame->function);
         APM_RECORD_TRACE(record_buf);
         strcat(APM_G(whole_trace_str), record_buf);
         has_bracket = 0;
     } else {
-        zend_printf("unknown");
+        //zend_printf("unknown");
         sprintf(record_buf, "%s", "unknown");
         APM_RECORD_TRACE(record_buf);
         strcat(APM_G(whole_trace_str), record_buf);
@@ -1110,13 +1112,13 @@ static void pt_frame_display(pt_frame_t *frame TSRMLS_DC, zend_bool indent, cons
     /* arguments */
     if (frame->arg_count) {
         for (i = 0; i < frame->arg_count; i++) {
-            zend_printf("%s", frame->args[i]);
+            //zend_printf("%s", frame->args[i]);
         	sprintf(record_buf, "%s", frame->args[i]);
         	APM_RECORD_TRACE(record_buf);
         	strcat(APM_G(whole_trace_str), record_buf);
 
             if (i < frame->arg_count - 1) {
-                zend_printf(", ");
+                //zend_printf(", ");
         		sprintf(record_buf, "%s", ", ");
         		APM_RECORD_TRACE(record_buf);
         		strcat(APM_G(whole_trace_str), record_buf);
@@ -1124,7 +1126,7 @@ static void pt_frame_display(pt_frame_t *frame TSRMLS_DC, zend_bool indent, cons
         }
     }
     if (has_bracket) {
-        zend_printf(")");
+        //zend_printf(")");
        	sprintf(record_buf, "%s", ")");
 		APM_RECORD_TRACE(record_buf);
 		strcat(APM_G(whole_trace_str), record_buf);
@@ -1146,9 +1148,9 @@ static void pt_frame_display(pt_frame_t *frame TSRMLS_DC, zend_bool indent, cons
 	// strcat(APM_G(whole_trace_str), record_buf);
 
     if (frame->type == PT_FRAME_EXIT) {
-        zend_printf(" wt: %.3f ct: %.3f\n",
-                ((frame->exit.wall_time - frame->entry.wall_time) / 1000000.0),
-                ((frame->exit.cpu_time - frame->entry.cpu_time) / 1000000.0));
+        //zend_printf(" wt: %.3f ct: %.3f\n",
+                //((frame->exit.wall_time - frame->entry.wall_time) / 1000000.0),
+                //((frame->exit.cpu_time - frame->entry.cpu_time) / 1000000.0));
        	sprintf(record_buf, " wt:%.3f ct:%.3f total:%.3f+",
                 ((frame->exit.wall_time - frame->entry.wall_time) / 1000000.0),
                 ((frame->exit.cpu_time - frame->entry.cpu_time) / 1000000.0),
@@ -1157,7 +1159,7 @@ static void pt_frame_display(pt_frame_t *frame TSRMLS_DC, zend_bool indent, cons
 		APM_RECORD_TRACE(record_buf);
 		strcat(APM_G(whole_trace_str), record_buf);
     } else {
-        zend_printf("\n");
+        //zend_printf("\n");
         APM_RECORD_TRACE("\n");
         strcat(APM_G(whole_trace_str), "+");
     }

@@ -1,8 +1,9 @@
 dnl This file becomes configure.in for self-contained extensions.
 
-AC_PREREQ(2.59)
+divert(1)
+
+AC_PREREQ(2.13)
 AC_INIT(config.m4)
-ifdef([AC_PRESERVE_HELP_ORDER], [AC_PRESERVE_HELP_ORDER], [])
 
 PHP_CONFIG_NICE(config.nice)
 
@@ -96,7 +97,15 @@ CPPFLAGS=$old_CPPFLAGS
 AC_MSG_RESULT([$PHP_DEBUG])
 
 dnl Support for building and testing Zend extensions
-ZEND_EXT_TYPE="zend_extension"
+if test "$PHP_DEBUG" = "yes" && test "$PHP_THREAD_SAFETY" = "yes; then
+  ZEND_EXT_TYPE="zend_extension_debug_ts"
+elif test "$PHP_DEBUG" = "yes"; then
+  ZEND_EXT_TYPE="zend_extension_debug"
+elif test "$PHP_THREAD_SAFETY" = "yes; then
+  ZEND_EXT_TYPE="zend_extension_ts"
+else
+  ZEND_EXT_TYPE="zend_extension"
+fi
 PHP_SUBST(ZEND_EXT_TYPE)
 
 dnl Discard optimization flags when debugging is enabled
@@ -110,7 +119,7 @@ if test "$PHP_DEBUG" = "yes"; then
   dnl add -O0 only if GCC or ICC is used
   if test "$GCC" = "yes" || test "$ICC" = "yes"; then
     CFLAGS="$CFLAGS -O0"
-    CXXFLAGS="$CXXFLAGS -g -O0"
+    CXXFLAGS="$CXXFLAGS -O0"
   fi
   if test "$SUNCC" = "yes"; then
     if test -n "$auto_cflags"; then

@@ -32,4 +32,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/mh/mysvn/php/hook/modules'
+libdir='/mh/mysvn/php/hook/hook_low_5_4/modules'

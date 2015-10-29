@@ -133,7 +133,7 @@ func ReportEventData() {
 }
 
 func (u *UnixProto) contentParse(data []byte) error {
-	//fmt.Println(string(data))
+	fmt.Println(string(data))
 	js, err := simplejson.NewJson(data)
 	if err != nil {
 		glog.Error(err.Error())
@@ -295,7 +295,7 @@ func (u *UnixProto) run() {
 	        panic(err)
 	    }
 	    //var buf [8*1024]byte
-	    buf := make([]byte, 64*1024)
+	    buf := make([]byte, 1024*1024)
 	    _, err = u.conn.Read(buf[:])
 	    if err != nil {
 	        panic(err)
